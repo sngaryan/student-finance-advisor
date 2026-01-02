@@ -7,11 +7,23 @@ import json
 # 1. Page Configuration
 st.set_page_config(page_title="Student Finance AI", page_icon="💰", layout="wide")
 
-# 2. Sidebar Setup (Only for Setup & Reset)
+# 2. Sidebar Setup
 with st.sidebar:
     st.header("🔑 Setup")
-    api_key = st.secrets.get("GEMINI_API_KEY") or st.text_input("Enter API Key", type="password")
     
+    # We wrap this in try/except so the app doesn't crash if secrets.toml is missing
+    try:
+        secret_key = st.secrets.get("GEMINI_API_KEY")
+    except Exception:
+        secret_key = None
+
+    # If NO secret is found, show the manual input box
+    if not secret_key:
+        api_key = st.text_input("Enter API Key", type="password", key="manual_api_key")
+    else:
+        api_key = secret_key
+        st.success("✅ API Key loaded from Secrets")
+
     st.divider()
     if st.button("🗑️ Reset Everything"):
         st.session_state.expenses = []
@@ -83,7 +95,7 @@ if st.session_state.expenses:
     st.divider()
 
     # 6. CHAT INTERFACE WITH GEMINI 3 FLASH
-    st.subheader("💬 Chat with Gemini 3 Flash")
+    st.subheader("💬 Chat with Gemini and analyse")
     
     for msg in st.session_state.messages:
         with st.chat_message(msg["role"]):
@@ -104,7 +116,7 @@ if st.session_state.expenses:
 
                     # Gemini 3 Flash with dynamic thinking
                     response = client.models.generate_content(
-                        model="gemini-3-flash",
+                        model="gemini-2.5-flash",
                         config=types.GenerateContentConfig(
                             system_instruction=sys_instruct,
                             thinking_config=types.ThinkingConfig(include_thoughts=True)
