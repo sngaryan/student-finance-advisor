@@ -102,7 +102,7 @@ if st.session_state.expenses:
             with st.spinner("AI is calculating your savings..."):
                 try:
                     response = client.models.generate_content(
-                        model="gemini-1.5-flash-latest",
+                        model="gemini-2.5-flash",
                         contents=prompt
                     )
                     st.success("Advisor Insight:")
@@ -115,3 +115,4 @@ if st.session_state.expenses:
         st.rerun()
 else:
     st.info("Start by adding an expense above!")
+
