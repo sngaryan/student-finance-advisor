@@ -83,11 +83,12 @@ if st.session_state.expenses:
                         break
             
             if not success:
-                st.error("❌ All AI models are currently unavailable. Please wait 60 seconds and try again.")
+                st.error("❌ All AI models are currently unavailable. Please wait and try again later.")
 
     if st.button("🗑️ Clear All"):
         st.session_state.expenses = []
         st.rerun()
 
 else:
+
     st.info("Add an expense to get started!")
