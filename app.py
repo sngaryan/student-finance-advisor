@@ -4,8 +4,11 @@ from google.genai import types
 import pandas as pd
 import json
 
+
+
 # 1. Page Configuration
 st.set_page_config(page_title="Student Finance AI", page_icon="💰", layout="wide")
+
 
 # 2. Sidebar Setup
 with st.sidebar:
@@ -137,3 +140,4 @@ if st.session_state.expenses:
 
 else:
     st.info("Start by setting your budget and adding your first expense above!")
+
